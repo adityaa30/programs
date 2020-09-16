@@ -4,7 +4,7 @@ using namespace std;
 
 struct Node {
   int data;
-  Node *next, *random;
+  Node *next, *prev, *random;
 
   Node(int data) {
     this->data = data;
