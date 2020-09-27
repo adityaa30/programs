@@ -1,4 +1,4 @@
-// https://github.com/adityaa30/cp-cli/blob/master/Template.cpp
+// https://github.com/adityaa30/cpcli
 #include <bits/stdc++.h>
 #define var(x) #x, x
 #define int long long int
@@ -69,16 +69,26 @@ string to_string(tuple<A, B, C, D> p) {
          to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")";
 }
 
-void debug() { cout << endl; }
-template <typename Head, typename... Tail> void debug(Head H, Tail... T) {
+void dbg() { cout << endl; }
+template <typename Head, typename... Tail> void dbg(Head H, Tail... T) {
   cout << " " << to_string(H);
-  debug(T...);
+  dbg(T...);
 }
+
+#ifdef LOCAL
+#define debug(...) cout << "[" << #__VA_ARGS__ << "]:", dbg(__VA_ARGS__)
+#else
+#define debug(...)
+#endif
 
 const int MOD = 1e9 + 7;
 
 int PosX[] = {0, 1, 0, -1, 1, 1, -1, -1};
 int PosY[] = {1, 0, -1, 0, 1, -1, 1, -1};
+
+void Precompute() {
+  // Compute some global variable common throughout all testcases
+}
 
 void Solve(int test) {
   // Start here
@@ -89,6 +99,7 @@ int32_t main() {
   cin.tie(NULL);
   cout.tie(NULL);
   cout << fixed << setprecision(20);
+  Precompute();
 
   int t = 1;
   cin >> t;

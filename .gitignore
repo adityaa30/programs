@@ -6,6 +6,7 @@ program
 temp.cpp
 
 *.txt
+cpcli.ini
 
 Compete
 ContestFiles

@@ -30,11 +30,12 @@ if [ ! -f "$INPUT_FILE" ]; then
     exit 1
 fi
 
+EXTRA_ARGS="-Wall -Wextra -pedantic -std=c++11 -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover -fstack-protector"
 
-g++ -o program $1 -DLOCAL
+g++ $EXTRA_ARGS -o program "$1" -DLOCAL
 ans=`./program < $INPUT_FILE`
 echo "$ans" > output.txt
-printf "$ans"
+cat output.txt
 rm program
 
 exit 0
