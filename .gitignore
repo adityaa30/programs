@@ -5,10 +5,9 @@
 program
 temp.cpp
 
-*.txt
 cpcli.ini
 
-Compete
-ContestFiles
+**/input.txt
+**/output.txt
 
 Introduction to Algorithms - 3rd Edition.pdf
