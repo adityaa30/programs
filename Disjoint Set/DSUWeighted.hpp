@@ -21,20 +21,20 @@ public:
     return x;
   }
 
-  bool Find(int x, int y) { return (Root(x) == Root(y)); }
-
-  void Union(int x, int y) {
+  bool Union(int x, int y) {
     int rootX = Root(x), rootY = Root(y);
+    if (rootX == rootY)
+      return false;
+
     if (size[rootX] < size[rootY]) {
-      parent[rootX] = parent[rootY];
+      parent[rootX] = rootY;
       size[rootY] += size[rootX];
     } else {
-      parent[rootY] = parent[rootX];
+      parent[rootY] = rootX;
       size[rootX] += size[rootY];
     }
+    return true;
   }
 
   int Size(int x) { return this->size[Root(x)]; }
 };
-
-int main() { return 0; }

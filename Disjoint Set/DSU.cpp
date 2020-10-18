@@ -14,13 +14,14 @@ public:
     return x;
   }
 
-  void Union(int x, int y) {
+  bool Union(int x, int y) {
     int rootX = Root(x), rootY = Root(y);
     if (rootX != rootY) {
       parent[rootX] = rootY;
+      return true;
     }
+    return false;
   }
 };
-
 
 int main() { return 0; }
