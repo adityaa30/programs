@@ -5,9 +5,8 @@
 program
 temp.cpp
 
-cpcli.ini
-
 **/input.txt
 **/output.txt
+**/.metadata.json
 
 Introduction to Algorithms - 3rd Edition.pdf
