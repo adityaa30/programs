@@ -1,35 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int NO_PARENT = -1;
+
 vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
-  int N = adj.size(); // 0-Indexed
+  int N = (int)adj.size(); // 0-Indexed
   vector<pair<int, int>> bridges;
 
   vector<bool> visited(N, false);
-  vector<int> discoverTime(N), low(N), parent(N);
+  vector<int> entryTime(N), low(N);
   int time = 0;
 
-  function<void(int)> dfs = [&](int curr) {
+  function<void(int, int)> dfs = [&](int curr, int parent) {
     visited[curr] = true;
-    discoverTime[curr] = low[curr] = ++time;
-    
+    entryTime[curr] = low[curr] = ++time;
+
     for (int child : adj[curr]) {
-      if (!visited[child]) {
-        parent[child] = curr;
-        dfs(child);
+      if (child == parent) continue;
+      else if (visited[child]) {
+        low[curr] = min(low[curr], entryTime[child]);
+      } else {
+        dfs(child, curr);
         low[curr] = min(low[curr], low[child]);
-        if (low[child] > discoverTime[curr]) {
+        if (low[child] > entryTime[curr]) {
+          // no backedge from any successor of `child` to any ancestor of `curr`
+          // hence `curr <-> child` is a bridge 
           bridges.push_back({curr, child});
         }
-      } else if (child != parent[curr]) {
-        low[curr] = min(low[curr], discoverTime[child]);
       }
     }
   };
 
   for (int i = 0; i < N; ++i) {
     if (!visited[i]) {
-      dfs(i);
+      dfs(i, NO_PARENT);
     }
   }
   return bridges;
