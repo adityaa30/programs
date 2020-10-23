@@ -1,3 +1,4 @@
+#include "../Misc/AdjacencyList.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -9,11 +10,11 @@ vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
 
   vector<bool> visited(N, false);
   vector<int> entryTime(N), low(N);
-  int time = 0;
+  int timer = 0;
 
   function<void(int, int)> dfs = [&](int curr, int parent) {
     visited[curr] = true;
-    entryTime[curr] = low[curr] = ++time;
+    entryTime[curr] = low[curr] = timer++;
 
     for (int child : adj[curr]) {
       if (child == parent) continue;
@@ -40,9 +41,20 @@ vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
 }
 
 int32_t main() {
-  vector<vector<int>> adj = {{1, 2, 3}, {0}, {0, 3}, {0, 2, 4}, {3}};
-  auto bridges = GetBridges(adj);
-  for (pair<int, int> bridge : bridges) {
+  vector<vector<int>> adj1 = {{1, 2, 3}, {0}, {0, 3}, {0, 2, 4}, {3}};
+  auto bridges1 = GetBridges(adj1);
+  for (pair<int, int> bridge : bridges1) {
+    cout << bridge.first << ' ' << bridge.second << '\n';
+  }
+
+  auto adj2 = GetAdjacencyList({
+    {0, 1},
+    {1, 2},
+    {2, 3},
+    {3, 0},
+  }, true);
+  auto bridges2 = GetBridges(adj2);
+  for (pair<int, int> bridge : bridges2) {
     cout << bridge.first << ' ' << bridge.second << '\n';
   }
 
