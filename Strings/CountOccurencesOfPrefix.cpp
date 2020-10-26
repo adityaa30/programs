@@ -1,17 +1,6 @@
+#include "PrefixFunction.hpp"
 #include <bits/stdc++.h>
 using namespace std;
-
-vector<int> PrefixFunction(string &s) {
-  int n = (int) s.length();
-  vector<int> lps(n, 0);
-  for (int i = 1; i < n; ++i) {
-    int j = lps[i - 1];
-    while (j > 0 && s[i] != s[j]) j = lps[j - 1];
-    j += (int) s[i] == s[j];
-    lps[i] = j;
-  }
-  return lps;
-}
 
 vector<int> PrefixOccurences(string &s) {
   int n = (int) s.length();
@@ -27,7 +16,7 @@ vector<int> PrefixOccurences(string &s) {
   
   // add 1 to count the original prefixes
   for (int i = 0; i <= n; ++i) count[i]++;
-  
+
   return count;
 }
 

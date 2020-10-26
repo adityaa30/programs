@@ -1,45 +1,37 @@
-#include<bits/stdc++.h>
+#include "PrefixFunction.hpp"
+#include <bits/stdc++.h>
 using namespace std;
-#define ll long long
- 
-vector<int> generateLPS(string pat){
-    int n = pat.length();
-    vector<int> lps(n);
-    lps[0] = 0;
-    int j;
-    for(int i=1; i<n; i++){
-        j = lps[i-1];
-        while(j>0 && pat[i]!=pat[j]){
-            j = lps[j-1];
-        }
-        if(pat[i]==pat[j])
-            j++;
-        lps[i] = j;
-    }
-    return lps;
-} 
 
-int main(){
-    // cin>>t;
-    string pat, t;
-	cin>>pat>>t;
-    int ans = 0;
-    vector<int> lps = generateLPS(pat);
-    int i=0, j=0;
-    while(i<t.length()){
-        if(pat[j]==t[i]){
-            i++; j++;
-        }
-        if(j==pat.length()){
-            ans++;
-            j=lps[j-1];
-        }   
-        else if(i<t.length() && pat[j]!=t[i]){
-            if(j!=0)
-                j = lps[j-1];
-            else
-                i++;    
-        }
-    }
-    cout<<ans<<endl;
+vector<int> KMP(string pattern, string target) {
+  int pLen = (int)pattern.length();
+  int tLen = (int)target.length();
+
+  pattern += '#';
+  auto lps = PrefixFunction(pattern);
+
+  vector<int> idx; // Store idx of all positions where substring found
+
+  int currLps = 0;
+  for (int i = 0; i < tLen; ++i) {
+    int j = currLps;
+    while (j > 0 && target[i] != pattern[j]) j = lps[j - 1];
+    currLps = j + (int)(target[i] == pattern[j]);
+    if (currLps == pLen) idx.push_back(i - pLen + 1);
+  }
+  return idx;
+}
+
+int32_t main() {
+  string pattern = "aa";
+  string target = "aaabcaaac";
+
+  auto idx = KMP(pattern, target);
+  cout << "Found pattern at indexs: ";
+  for (int x : idx) {
+    cout << x << ' ';
+    assert(pattern == target.substr(x, (int) pattern.length()));
+  }
+  cout << '\n';
+
+  return 0;
 }
