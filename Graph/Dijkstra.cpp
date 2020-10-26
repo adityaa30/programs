@@ -4,33 +4,26 @@
 using namespace std;
 
 const int MOD = 1e7 + 5;
-const int INF = 1e9 + 5;
+const int INF = INT_MAX;
 
-struct Pair {
-  int weight, idx;
-
-  Pair(int weight, int idx) : weight(weight), idx(idx) {}
-};
-
-struct ComparePair {
-  bool operator()(Pair &a, Pair &b) { return a.weight < b.weight; }
-};
-
-void Dijkstra(vector<vector<Pair>> &adj, int src = 0) {
+void Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
   int V = adj.size();
-  vector<int> distance(V, INT_MAX);
-  priority_queue<Pair, vector<Pair>, ComparePair> pq;
+  vector<int> distance(V, INF);
+  using pii = pair<int, int>;
+  priority_queue<pii, vector<pii>, greater<pii>> pq;
 
   distance[src] = 0;
-  pq.push(Pair(0, src));
+  pq.push({0, src});
 
   while (!pq.empty()) {
-    Pair top = pq.top();
+    pii top = pq.top();
     pq.pop();
-    for (Pair child : adj[top.idx]) {
-      if (distance[top.idx] + child.weight < distance[child.idx]) {
-        distance[child.idx] = distance[top.idx] + child.weight;
-        pq.push(Pair(distance[child.idx], child.idx));
+    int weight = top.first, idx = top.second;
+    for (auto child : adj[idx]) {
+      int childWeight = child.back(), childIdx = child[0];
+      if (distance[idx] + childWeight < distance[childIdx]) {
+        distance[childIdx] = distance[idx] + childWeight;
+        pq.push({distance[childIdx], childIdx});
       }
     }
   }
