@@ -10,24 +10,22 @@ int PosX[] = {0, 1, 0, -1};
 int PosY[] = {1, 0, -1, 0};
 
 void TopoSort(vector<vector<int>> &adj) {
-  int V = adj.size();
+  int V = adj.size(); // 0-Indexed
   vector<bool> visited(V, false);
 
-  bool isCycle = false;
   stack<int> s;
-  function<void(int)> Util = [&](int curr) {
+  function<void(int)> dfs = [&](int curr) {
     visited[curr] = true;
     for (int child : adj[curr]) {
       if (!visited[child]) {
-        Util(child);
+        dfs(child);
       }
     }
     s.push(curr);
   };
 
   for (int i = 0; i < V; ++i) {
-    if (!visited[i])
-      Util(i);
+    if (!visited[i]) dfs(i);
   }
 
   while (!s.empty()) {

@@ -3,15 +3,17 @@
 using namespace std;
 
 const int INF = INT_MAX;
-const int MOD = 1000000007;
+const int MOD = 1e9 + 7;
 
-void PrimsMST(vector<vector<array<int, 2>>> &adj, int src = 0) {
+vector<int> PrimsMST(vector<vector<array<int, 2>>> &adj, int src = 0) {
+  // adj[x] -> List of {to, weight} # Weight should always be the `back()` value 
+  
   int V = adj.size(); // 0-indexed
   vector<bool> visited(V, false);
   vector<int> weights(V, INF), parent(V, -1);
 
   using pii = pair<int, int>;
-  priority_queue<pii, vector<pii, greater<pii>>> pq;
+  priority_queue<pii, vector<pii>, greater<pii>> pq;
 
   weights[src] = 0;
   pq.push({0, src}); // (distance, node)
@@ -19,7 +21,7 @@ void PrimsMST(vector<vector<array<int, 2>>> &adj, int src = 0) {
   while (!pq.empty()) {
     pii top = pq.top(); // get the edge with minimum weight
     pq.pop();
-    int weight = top.first, idx = top.second;
+    int idx = top.second;
     visited[idx] = true;
     for (auto child : adj[idx]) {
       int childWeight = child.back(), childIdx = child[0];
@@ -31,9 +33,7 @@ void PrimsMST(vector<vector<array<int, 2>>> &adj, int src = 0) {
     }
   }
 
-  for (int i = 1; i < parent.size(); ++i) {
-    cout << i << " <-> " << parent[i] << '\n';
-  }
+  return parent;
 }
 
 int32_t main() {
@@ -65,7 +65,9 @@ int32_t main() {
   addEdge(6, 8, 6);
   addEdge(7, 8, 7);
 
-  PrimsMST(adj, 0);
-
+  auto parent = PrimsMST(adj, 0);
+  for (int i = 1; i < (int) parent.size(); ++i) {
+    cout << i << " <-> " << parent[i] << '\n';
+  }
   return 0;
 }

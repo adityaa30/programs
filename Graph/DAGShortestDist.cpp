@@ -1,36 +1,22 @@
 // adityaa30
 #include <bits/stdc++.h>
 #define int long long int
-#define debug(a) cout << #a << "=" << a << ' ';
-#define print(it)                                                              \
-  cout << #it << " -> ";                                                       \
-  for (auto __x__ : it)                                                        \
-    cout << __x__ << ' ';                                                      \
-  cout << '\n';
 using namespace std;
 
-const int MOD = 1000000007;
+const int MOD = 1e9 + 7;
+const int INF = LLONG_MAX;
 
-int PosX[] = {0, 1, 0, -1};
-int PosY[] = {1, 0, -1, 0};
-
-struct Pair {
-  int weight, idx;
-
-  Pair(int weight, int idx) : weight(weight), idx(idx) {}
-};
-
-stack<int> TopoSort(vector<vector<Pair>> &adj) {
+stack<int> TopoSort(vector<vector<array<int, 2>>> &adj) {
   int V = adj.size();
   vector<bool> visited(V, false);
 
   bool isCycle = false;
   stack<int> s;
-  function<void(int)> Util = [&](int curr) {
+  function<void(int)> dfs = [&](int curr) {
     visited[curr] = true;
-    for (Pair child : adj[curr]) {
-      if (!visited[child.idx]) {
-        Util(child.idx);
+    for (array<int, 2> child : adj[curr]) {
+      if (!visited[child[0]]) {
+        dfs(child[0]);
       }
     }
     s.push(curr);
@@ -38,26 +24,26 @@ stack<int> TopoSort(vector<vector<Pair>> &adj) {
 
   for (int i = 0; i < V; ++i) {
     if (!visited[i])
-      Util(i);
+      dfs(i);
   }
 
   return s;
 }
 
-void DAGShortestDist(int src, vector<vector<Pair>> &adj) {
+vector<int> DAGShortestDist(int src, vector<vector<array<int, 2>>> &adj) {
   int V = adj.size();
-  vector<int> distance(V, INT_MAX);
+  vector<int> distance(V, INF);
 
   stack<int> topo = TopoSort(adj);
   distance[src] = 0;
   while (!topo.empty()) {
     int top = topo.top(); topo.pop();
-    for (Pair child : adj[top]) {
-      distance[child.idx] = min(distance[child.idx], distance[top] + child.weight);
+    for (array<int, 2> child : adj[top]) {
+      distance[child[0]] = min(distance[child[0]], distance[top] + child.back());
     }
   }
 
-  print(distance);
+  return distance;
 }
 
 int32_t main() {
@@ -66,10 +52,10 @@ int32_t main() {
   cout.tie(NULL);
   cout << fixed << setprecision(20);
   int V = 6;
-  vector<vector<Pair>> adj(V);
+  vector<vector<array<int, 2>>> adj(V);
 
   function<void(int, int, int)> addEdge = [&](int a, int b, int weight) {
-    adj[a].push_back(Pair(weight, b));
+    adj[a].push_back({b, weight});
   };
 
   addEdge(0, 1, 5);

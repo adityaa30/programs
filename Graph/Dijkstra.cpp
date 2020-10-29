@@ -6,11 +6,13 @@ using namespace std;
 const int MOD = 1e7 + 5;
 const int INF = INT_MAX;
 
-void Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
-  int V = adj.size();
+vector<int> Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
+  // adj[x] -> List of {to, weight} # Weight should always be the `back()` value 
+  
+  int V = adj.size(); // 0-Indexed
   vector<int> distance(V, INF);
   using pii = pair<int, int>;
-  priority_queue<pii, vector<pii>, greater<pii>> pq;
+  priority_queue<pii, vector<pii>, greater<pii>> pq; // MinHeap
 
   distance[src] = 0;
   pq.push({0, src});
@@ -18,7 +20,7 @@ void Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
   while (!pq.empty()) {
     pii top = pq.top();
     pq.pop();
-    int weight = top.first, idx = top.second;
+    int idx = top.second;
     for (auto child : adj[idx]) {
       int childWeight = child.back(), childIdx = child[0];
       if (distance[idx] + childWeight < distance[childIdx]) {
@@ -28,52 +30,7 @@ void Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
     }
   }
 
-  for (int i = 0; i < distance.size(); ++i) {
-    cout << "Distance(" << i << ") = " << distance[i] << '\n';
-  }
-}
-
-void DijkstraN2(vector<vector<Pair>> &adj, int src = 0) {
-  int N = adj.size();
-  vector<int> distance(N + 1, INF);
-  vector<bool> visited(N + 1, false);
-  vector<int> parent(N + 1, -1);
-
-  distance[src] = 0;
-
-  function<int(void)> getMin = [&]() {
-    int idx = -1;
-    for (int j = 0; j < N; ++j) {
-      if (!visited[j] && (idx == -1 || distance[j] < distance[idx])) {
-        idx = j;
-      }
-    }
-    return idx;
-  };
-
-  /// src --> vertex -> child == (distance[vertex] + weight(vertex-->child))
-
-  // O(N) * O(N + ...) == O(N^2)
-  // while (no node is left)
-  for (int i = 0; i < N - 1; ++i) {
-    // Pick the unvisted vertex with the minimum distance
-    int idx = getMin();
-    visited[idx] = true;
-
-    // Update all the child
-    for (Pair child : adj[idx]) {
-      bool ok = (distance[idx] + child.weight < distance[child.idx]);
-      if (!visited[child.idx] && ok) {
-        parent[child.idx] = idx;
-        distance[child.idx] = distance[idx] + child.weight;
-      }
-    }
-  }
-
-  for (int i = 0; i < N; ++i) {
-    cout << "Distance(" << i << ") = " << distance[i] << " Parent(" << parent[i]
-         << ")\n";
-  }
+  return distance;
 }
 
 int32_t main() {
@@ -83,11 +40,11 @@ int32_t main() {
   cout << fixed << setprecision(20);
 
   int V = 9;
-  vector<vector<Pair>> adj(V);
+  vector<vector<array<int, 2>>> adj(V);
 
   function<void(int, int, int)> addEdge = [&](int a, int b, int weight) {
-    adj[a].push_back(Pair(weight, b));
-    adj[b].push_back(Pair(weight, a));
+    adj[a].push_back({b, weight});
+    adj[b].push_back({a, weight});
   };
 
   addEdge(0, 1, 4);
@@ -105,11 +62,11 @@ int32_t main() {
   addEdge(6, 8, 6);
   addEdge(7, 8, 7);
 
-  //   cout << "Using STL O(NLogE):\n";
-  //   Dijkstra(adj);
-
-  cout << "Without STL O(N*N):\n";
-  DijkstraN2(adj);
+  cout << "Using STL O(NLogE): (source=0)\n";
+  auto distance = Dijkstra(adj);
+  for (int i = 0; i < (int) distance.size(); ++i) {
+    cout << "Distance(" << i << ") = " << distance[i] << '\n';
+  }
 
   return 0;
 }
