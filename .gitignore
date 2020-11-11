@@ -10,3 +10,9 @@ temp.cpp
 **/.metadata.json
 
 Introduction to Algorithms - 3rd Edition.pdf
+
+# Lex Files
+a.out
+lex.yy.c
+y.tab.c
+y.tab.h
