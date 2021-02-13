@@ -11,7 +11,7 @@ public:
 
   void Update(int idx, int delta) {
     delta %= MOD;
-    for (; idx < this->size; idx += (idx & (-idx))) {
+    for (; idx <= this->size; idx += (idx & (-idx))) {
       table[idx] += delta;
       table[idx] %= MOD;
     }
