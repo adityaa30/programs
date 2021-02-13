@@ -11,7 +11,7 @@ int PosY[] = {1, 0, -1, 0};
 SLL IntersectionSorted(Node *first, Node *second) {
   SLL sl;
 
-  while (first != NULL && second != NULL) {
+  while (first && second) {
     if (first->data < second->data) {
       first = first->next;
     } else if (first->data > second->data) {

@@ -12,43 +12,30 @@ Node *Reverse(Node *root) {
   Node *prev = NULL;
   while (root != NULL) {
     Node *next = root->next;
-
     // NULL <- 1 .. 2' -> 3
     root->next = prev;
     // NULL <- 1 <- 2' .. 3
     prev = root;
-
     root = next;
   }
   return prev;
 }
 
 Node *getMiddle(Node *root) {
-  Node *jumpOne = root;
-  Node *jumpTwo = root;
+  Node *slow = root;
+  Node *fast = root;
 
-  // 1 2
-  while (jumpTwo != NULL) {
-    jumpTwo = jumpTwo->next;
-
-    if (jumpTwo == NULL) {
-      // SLL have odd length
-      return jumpOne;
-    }
-
-    jumpTwo = jumpTwo->next;
-    if (jumpTwo == NULL) {
-      return jumpOne->next;
-    }
-
-    jumpOne = jumpOne->next;
+  while (fast && fast->next) {
+    fast = fast->next->next;
+    slow = slow->next;
   }
-  return jumpOne;
+
+  return slow;
 }
 
 bool Compare(Node *first, Node *second) {
   // We assume that both first & second have the exact same length
-  while (first != NULL && second != NULL) {
+  while (first && second) {
     if (first->data != second->data)
       return false;
     else {
@@ -56,9 +43,11 @@ bool Compare(Node *first, Node *second) {
       second = second->next;
     }
   }
-
   return true;
 }
+
+//  1 2 3 4 -> NULL
+//  1 2 3 4 5
 
 bool IsPalidrome(Node *root) {
   Node *middle = getMiddle(root);

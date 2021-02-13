@@ -29,7 +29,7 @@ Node *FindIntersectionPoint(Node *first, Node *second) {
 
   int diff = secondLen - firstLen;
 
-  while (diff > 0) {
+  for (int i = 0; i < diff; ++i) {
     second = second->next;
   }
 
