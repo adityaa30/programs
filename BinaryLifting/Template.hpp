@@ -17,7 +17,7 @@ private:
       up[curr][0] = parent;
 
       for (int i = 1; i <= limit; ++i) {
-        if (up[curr][i - 1] != -1) {
+        if (up[curr][i - 1] != NO_PARENT) {
           up[curr][i] = up[up[curr][i - 1]][i - 1];
         } else {
           break;
