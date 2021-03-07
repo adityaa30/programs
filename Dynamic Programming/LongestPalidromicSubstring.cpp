@@ -7,10 +7,10 @@ string LongestPalidromicSubsequence(string str) {
   li n = str.length(), maxLen, startIdx;
   bool dp[n][n] = {false}; // dp[i, j] = True if substring(i, j) is palidrom
 
-  // length = 1
+  // length = 1 
   maxLen = 1;
   startIdx = 0;
-  for (li i = 0; i < n; ++i) {
+  for (li i = 0; i <n; ++i) {
     dp[i][i] = true;
   }
 

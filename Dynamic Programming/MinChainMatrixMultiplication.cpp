@@ -42,7 +42,7 @@ int Matrix(vector<int> &p) {
 }
 
 int main() {
-  vector<int> inp = {1, 2, 3, 4, 3};
+  vector<int> inp = {10, 100,20,5, 80};
   cout << Matrix(inp);
   return 0;
 }
