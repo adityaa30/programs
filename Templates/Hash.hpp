@@ -1,5 +1,5 @@
-
-#include <bits/extc++.h>
+#include <bits/stdc++.h>
+using namespace std;
 
 struct splitmix64_hash {
   static uint64_t splitmix64(uint64_t x) {
@@ -18,7 +18,7 @@ struct splitmix64_hash {
 };
 
 template <typename K, typename V, typename Hash = splitmix64_hash>
-using hash_map = __gnu_pbds::gp_hash_table<K, V, Hash>;
+using hash_map = unordered_map<K, V, Hash>;
 
-template <typename K, typename Hash = splitmix64_hash>
-using hash_set = hash_map<K, __gnu_pbds::null_type, Hash>;
+template <typename k, typename hash = splitmix64_hash>
+using hash_set = unordered_set<k, hash>;

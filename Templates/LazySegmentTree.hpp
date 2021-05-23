@@ -4,7 +4,23 @@ using namespace std;
 
 template <class T> class LazySegmentTree {
   using QueryMergeType = function<T(T &, T &)>;
-  using UpdateMergeType = function<T(T &, T &, int len)>;
+
+  /**
+   * @param prevOp Previous operations
+   * @param newOp  New operation
+   *  [prevOp] is merged with [newOp]
+   * @param len Length of the segment on which the update is applied
+   *  - WARN: len=1 when merging two operations
+   * 
+   * NOTE: When merging two operations, it's necessary to consider the priority
+   * Eg, two operation are possible:
+   *  1. Assign V to [l ... r]
+   *  2. Add V to [l ... r]
+   * Now, when merging Nodes with different operation, (1) gets more priority.
+   * Merge(Op1, Op2) -> Op1
+   * Merge(Op2, Op1) -> Op2
+   */
+  using UpdateMergeType = function<T(T &prevOp, T &newOp, int len)>;
 
   int size;
   T QueryNeutralVal, UpdateNeutralVal;
@@ -26,13 +42,35 @@ public:
    * Child of x -> (2x + 1), (2x + 2)
    */
 
-  void MergeChildNodes(int x) {
+  inline void MergeChildNodes(int x) {
     /** Any associative operation can be used to merge here
      * x op y op z <=> (x op y) op z <=> x op (y op z)
      * Example: Matrix/Modular/Normal Multiply/Add, Bitwise Operations,
      *  GCD,
      */
-    nodes[x] = QueryOp(nodes[2 * x + 1], nodes[2 * x + 2]);
+    nodes[x] = QueryOp(nodes[(x << 1) + 1], nodes[(x << 1) + 2]);
+  }
+
+  inline void Propagate(int x, int lx, int rx) {
+    assert(lx <= rx);
+    if (rx == lx) {
+      // Leaf Node, we cannot propagate
+      return;
+    }
+
+    // Apply operation to the children
+    int m = lx + (rx - lx) / 2;
+    int l = (x << 1) + 1, r = (x << 1) + 2;
+
+    // [lx .. m]
+    operations[l] = UpdateOp(operations[l], operations[x], 1);
+    nodes[l] = UpdateOp(nodes[l], operations[x], m - lx + 1);
+
+    // [m+1 .. rx]
+    operations[r] = UpdateOp(operations[r], operations[x], 1);
+    nodes[r] = UpdateOp(nodes[r], operations[x], rx - (m + 1) + 1);
+
+    operations[x] = UpdateNeutralVal;
   }
 
 private:
@@ -46,30 +84,9 @@ private:
     }
 
     int m = lx + (rx - lx) / 2;
-    Build(initial, 2 * x + 1, lx, m);
-    Build(initial, 2 * x + 2, m + 1, rx);
+    Build(initial, (x << 1) + 1, lx, m);
+    Build(initial, (x << 1) + 2, m + 1, rx);
     MergeChildNodes(x);
-  }
-
-  void Propagate(int x, int lx, int rx) {
-    if (rx == lx) {
-      // Left Node, we cannot propagate
-      return;
-    }
-
-    // Apply operation to the children
-    int m = lx + (rx - lx) / 2;
-
-    // [lx .. m]
-    operations[2 * x + 1] = UpdateOp(operations[2 * x + 1], operations[x], 1);
-    nodes[2 * x + 1] = UpdateOp(nodes[2 * x + 1], operations[x], m - lx + 1);
-
-    // [m+1 .. rx]
-    operations[2 * x + 2] = UpdateOp(operations[2 * x + 2], operations[x], 1);
-    nodes[2 * x + 2] =
-        UpdateOp(nodes[2 * x + 2], operations[x], rx - (m + 1) + 1);
-
-    operations[x] = UpdateNeutralVal;
   }
 
   void Update(int l, int r, T val, int x, int lx, int rx) {
@@ -88,8 +105,8 @@ private:
     }
 
     int m = lx + (rx - lx) / 2;
-    Update(l, r, val, 2 * x + 1, lx, m);
-    Update(l, r, val, 2 * x + 2, m + 1, rx);
+    Update(l, r, val, (x << 1) + 1, lx, m);
+    Update(l, r, val, (x << 1) + 2, m + 1, rx);
     MergeChildNodes(x);
   }
 
@@ -107,8 +124,8 @@ private:
     }
 
     int m = lx + (rx - lx) / 2;
-    T left = Query(l, r, 2 * x + 1, lx, m);
-    T right = Query(l, r, 2 * x + 2, m + 1, rx);
+    T left = Query(l, r, (x << 1) + 1, lx, m);
+    T right = Query(l, r, (x << 1) + 2, m + 1, rx);
     return QueryOp(left, right);
   }
 
@@ -142,6 +159,10 @@ public:
     assert(r < size);
     assert(l <= r);
     Update(l, r, val, 0, 0, size - 1);
+  }
+
+  void Update(int idx, T val) {
+    Update(idx, idx, val);
   }
 
   T Query(int l, int r) {
