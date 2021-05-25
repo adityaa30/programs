@@ -1,5 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/5/1/practice/contest/279634/problem/B
-#include "../SegmentTree_RangeUpdate_PointQuery.hpp"
+#include "SegmentTree_RangeUpdate_PointQuery.hpp"
 #include <bits/stdc++.h>
 #define int long long int
 using namespace std;

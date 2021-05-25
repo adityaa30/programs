@@ -1,5 +1,5 @@
 // https://cses.fi/problemset/task/1688
-#include "../../../BinaryLifting/Template-LCA.hpp"
+#include "Template-LCA.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 

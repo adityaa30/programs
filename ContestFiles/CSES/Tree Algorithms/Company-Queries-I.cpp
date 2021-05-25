@@ -1,5 +1,5 @@
 // https://cses.fi/problemset/task/1687
-#include "../../../BinaryLifting/Template.hpp"
+#include "Template.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 

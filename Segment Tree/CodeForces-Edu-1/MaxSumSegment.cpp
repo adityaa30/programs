@@ -1,5 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/4/2/practice/contest/273278/problem/A
-#include "../SegmentTree.hpp"
+#include "SegmentTree.hpp"
 #include <bits/stdc++.h>
 #define int long long int
 using namespace std;

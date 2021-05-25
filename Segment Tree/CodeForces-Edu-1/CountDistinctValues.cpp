@@ -1,5 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/4/4/practice/contest/274684/problem/D
-#include "../SegmentTree.hpp"
+#include "SegmentTree.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 
