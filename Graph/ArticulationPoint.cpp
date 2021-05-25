@@ -1,4 +1,4 @@
-#include "../Misc/AdjacencyList.hpp"
+#include "AdjacencyList.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 

@@ -1,5 +1,6 @@
 #!/bin/bash
-IFS=$'\n'; set -f
+set -f
+IFS=$'\n';
 
 CHECK_DIR=`./`
 
@@ -24,8 +25,10 @@ for path in $CPP_FILES
 do
     # To support programs using pthread we add flag
     # TODO: Use pthread flag only when required
-    g++ $path -o $TEST_PROG_FILE -pthread
-
+    EXTRA_ARGS="-std=c++11"
+    HEADER_PATH="-I$(pwd)/Templates"
+    g++ $EXTRA_ARGS $HEADER_PATH -o $TEST_PROG_FILE $path  
+    
     if [ -f $TEST_PROG_FILE ];
     then
         echo "$path: ✅"

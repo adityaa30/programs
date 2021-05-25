@@ -1,0 +1,11 @@
++ IFS='
+'
+++ ./
+test-cpp-compile.sh: line 5: ./: Is a directory
++ CHECK_DIR=
++ '[' 1 == 1 ']'
++ CHECK_DIR=input.txt
++ '[' '!' -d input.txt ']'
++ echo 'Directory '\''input.txt'\'' does not exist.'
+Directory 'input.txt' does not exist.
++ exit 0
