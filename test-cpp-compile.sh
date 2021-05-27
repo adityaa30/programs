@@ -28,6 +28,7 @@ do
     EXTRA_ARGS="-std=c++11"
     HEADER_PATH="-I$(pwd)/Templates"
     g++ $EXTRA_ARGS $HEADER_PATH -o $TEST_PROG_FILE $path -pthread
+
     
     if [ -f $TEST_PROG_FILE ];
     then
