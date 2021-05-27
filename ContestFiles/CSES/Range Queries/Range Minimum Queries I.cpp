@@ -1,5 +1,5 @@
 // adityaa30
-#include "../../Segment Tree/SegmentTree.hpp"
+#include "SegmentTree.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 
