@@ -15,7 +15,7 @@ fi
 
 
 CPP_FILES=`find $CHECK_DIR -name '*.cpp'`
-TEST_PROG_FILE=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo ''`
+TEST_PROG_FILE=`uuidgen`
 
 TEST_EXIT_STATUS=0
 
@@ -25,7 +25,7 @@ for path in $CPP_FILES
 do
     # To support programs using pthread we add flag
     # TODO: Use pthread flag only when required
-    EXTRA_ARGS="-std=c++11"
+    EXTRA_ARGS="-std=c++17"
     HEADER_PATH="-I$(pwd)/Templates"
     g++ $EXTRA_ARGS $HEADER_PATH -o $TEST_PROG_FILE $path -pthread
 
