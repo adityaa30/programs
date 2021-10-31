@@ -40,6 +40,39 @@ vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
   return bridges;
 }
 
+vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
+  int N = (int) adj.size();
+  vector<pair<int, int>> bridges;
+  vector<int> level(N, 0); // 0 -> Means vertex not yet reached
+  vector<int> dp(N, 0); // Number of back-edges/paths around i<->parent[i]
+  
+  function<void(int, int)> dfs = [&](int curr, int parent) {
+    dp[curr] = 0;
+    for (int child : adj[curr]) {
+      if (child == parent) continue;
+      else if (level[child] == 0) {
+        level[child] = level[curr] + 1;
+        dfs(child, curr);
+        dp[curr] += dp[child];
+      } else if (level[child] < level[curr]) {
+        dp[curr]++;
+      } else if (level[child] > level[curr]) {
+        dp[curr]--; // This back-edge is already counted from the curr <-> child dp.
+      }
+    }
+
+    // Finally if there is no backedges around curr <-> parent then it is a bridge
+    if (dp[curr] == 0 && parent != NO_PARENT) {
+      bridges.push_back({curr, parent});
+    }
+  };
+
+  level[0] = 1;
+  dfs(0, NO_PARENT);
+
+  return bridges;
+}
+
 int32_t main() {
   vector<vector<int>> adj1 = {{1, 2, 3}, {0}, {0, 3}, {0, 2, 4}, {3}};
   auto bridges1 = GetBridges(adj1);
