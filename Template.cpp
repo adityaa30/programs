@@ -89,7 +89,7 @@ void Precompute() {
   // Compute some global variable common throughout all testcases
 }
 
-void Solve(int test) {
+void Solve() {
   // Start here
 }
 
@@ -104,7 +104,7 @@ int32_t main() {
   cin >> t;
   for (int test = 1; test <= t; ++test) {
     // cout << "Case #" << test << ": ";
-    Solve(test);
+    Solve();
   }
 
   return 0;
