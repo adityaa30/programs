@@ -40,7 +40,7 @@ fi
 HOME_DIR=`pwd`
 
 # Create a new folder with random name to save generated data
-TEST_DIR=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo ''`
+TEST_DIR=`uuidgen`
 
 mkdir -p $TEST_DIR
 echo "Created folder $TEST_DIR 💿"
