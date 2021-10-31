@@ -40,7 +40,7 @@ vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
   return bridges;
 }
 
-vector<pair<int, int>> GetBridges(vector<vector<int>> &adj) {
+vector<pair<int, int>> GetBridgesDpBased(vector<vector<int>> &adj) {
   int N = (int) adj.size();
   vector<pair<int, int>> bridges;
   vector<int> level(N, 0); // 0 -> Means vertex not yet reached
