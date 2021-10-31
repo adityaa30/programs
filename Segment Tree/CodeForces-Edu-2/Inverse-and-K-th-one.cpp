@@ -1,5 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/5/3/practice/contest/280799/problem/B
-#include "../LazySegmentTree.hpp"
+#include "LazySegmentTree.hpp"
 #include <bits/stdc++.h>
 #define int int64_t
 using namespace std;
