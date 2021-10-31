@@ -33,6 +33,29 @@ vector<int> Dijkstra(vector<vector<array<int, 2>>> &adj, int src = 0) {
   return distance;
 }
 
+vector<int> DijkstraSet(vector<vector<array<int, 2>>> &adj, int src = 0) {
+  int n = adj.size(); // 0-indexed
+  vector<int> distance(n, INF), prev(n, -1);
+  // prev => prev[x] = y => y -> x edge exists on the shortest path from a to b (a .. y -> x .. b)
+  distance[src] = 0;
+
+  set<array<int, 2>> s;
+  s.insert({0, src});
+  while (!s.empty()) {
+    int v = (*s.begin())[1]; s.erase(s.begin());
+    for (auto [to, w] : adj[v]) {
+      if (distance[v] + w < distance[to]) {
+        s.erase({distance[to], to});
+        distance[to] = distance[v] + w;
+        prev[to] = v;
+        s.insert({distance[to], to});
+      }
+    }
+  }
+
+  return distance;
+}
+
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
