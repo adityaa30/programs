@@ -1,5 +1,5 @@
 // https://codeforces.com/edu/course/2/lesson/5/4/practice/contest/280801/problem/B
-#include "../LazySegmentTree.hpp"
+#include "LazySegmentTree.hpp"
 #include <bits/stdc++.h>
 #define int long long int
 using namespace std;
