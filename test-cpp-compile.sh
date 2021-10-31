@@ -15,7 +15,15 @@ fi
 
 
 CPP_FILES=`find $CHECK_DIR -name '*.cpp'`
-TEST_PROG_FILE=`uuidgen`
+
+if ! command -v uuidgen &> /dev/null
+then
+    TEST_PROG_FILE=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo ''`
+else
+    TEST_PROG_FILE=`uuidgen`
+fi
+
+
 
 TEST_EXIT_STATUS=0
 
