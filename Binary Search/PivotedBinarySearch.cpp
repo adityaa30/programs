@@ -2,49 +2,68 @@
 #define li long long int
 using namespace std;
 
-li BinarySearch(li arr[], li l, li r, li key) {
-    if (r >= l) {
-        li m = l + (r - l) / 2;
-        if(arr[m] == key) return m;
+int GetPivotIdx(vector<int> A) {
+  int n = (int)A.size();
+  int low = 0, high = n - 1;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if ((mid + 1) <= high && A[mid] > A[mid + 1])
+      return mid;
+    if ((mid - 1) >= low && A[mid - 1] > A[mid])
+      return mid - 1;
 
-        if(arr[m] > key) return BinarySearch(arr, l, m - 1, key);
-        return BinarySearch(arr, m + 1, r, key);
+    if (A[low] >= A[mid])
+      high = mid - 1;
+    else
+      low = mid + 1;
+  }
+  return -1;
+}
+
+int LocalMinium(vector<int> A, int key) {
+  int n = A.size();
+  int low = 0, high = n - 1;
+  int ans = n;
+  while (low <= high) {
+    int m = low + (high - low) / 2;
+  }
+  cout << ans << '\n';
+}
+
+int PivotedBinarySearch(vector<int> A, int key) {
+  int n = (int)A.size();
+  int low = 0, high = n - 1;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (A[mid] == key)
+      return mid;
+    if (A[low] <= A[mid]) { // left half is sorted
+      if (A[low] <= key && key <= A[mid]) {
+        // key lies in the left half
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+      continue;
     }
-    return -1;
-}
 
-li FindPivot(li arr[], li l, li r) {
-    if (r < l) return -1;
-    if (r == l) return l;
-
-    li m = l + (r - l) / 2;
-    if(m < r && arr[m] > arr[m + 1]) return m;
-    if(m > l && arr[m - 1] > arr[m]) return m - 1;
-
-    if(arr[l] >= arr[m]) return FindPivot(arr, l, m - 1);
-    
-    return FindPivot(arr, m + 1, r);
-}
-
-li PivotedBinarySearch(li arr[], li n, li key) {
-    li pivot = FindPivot(arr, 0, n - 1);
-    if (pivot == -1) return BinarySearch(arr, 0, n - 1, key);
-
-    if(arr[pivot] == key) return pivot;
-
-    if(arr[0] <= key) return BinarySearch(arr, 0, pivot - 1, key);
-
-    return BinarySearch(arr, pivot + 1, n - 1, key);
-}
-
-int main() {
-    li n, key;
-    cin >> n;
-    li arr[n];
-    for(li i = 0; i < n; ++i) {
-        cin >> arr[i];
+    // Now, if left half is not sorted then right half needs to be sorted
+    if (A[mid] <= key && key <= A[high]) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
     }
-    cin >> key;
-    cout << PivotedBinarySearch(arr, n, key) << endl;
-    return 0;
+  }
+  return -1;
+}
+
+int32_t main() {
+  int n, key;
+  cin >> n;
+  vector<int> arr(n);
+  for (int i = 0; i < n; ++i)
+    cin >> arr[i];
+  cin >> key;
+  cout << PivotedBinarySearch(arr, key) << endl;
+  return 0;
 }
