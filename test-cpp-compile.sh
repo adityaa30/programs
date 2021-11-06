@@ -2,6 +2,7 @@
 set -f
 IFS=$'\n';
 
+GIT_ROOT_DIR=`git rev-parse --show-toplevel`
 CHECK_DIR=`./`
 
 if [ $# == 1 ]
@@ -34,10 +35,10 @@ do
     # To support programs using pthread we add flag
     # TODO: Use pthread flag only when required
     EXTRA_ARGS="-std=c++17"
-    HEADER_PATH="-I$(pwd)/Templates"
+    HEADER_PATH="-I$GIT_ROOT_DIR/Templates"
     g++ $EXTRA_ARGS $HEADER_PATH -o $TEST_PROG_FILE $path -pthread
 
-    
+
     if [ -f $TEST_PROG_FILE ];
     then
         echo "$path: ✅"
