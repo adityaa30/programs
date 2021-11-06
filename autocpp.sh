@@ -1,5 +1,6 @@
 #!/bin/bash
 INPUT_FILE='input.txt'
+GIT_ROOT_DIR=`git rev-parse --show-toplevel`
 
 # Check if arguments passed are OK
 if [ $# -le 0 ]
@@ -29,11 +30,12 @@ if [ ! -f "$INPUT_FILE" ]; then
     exit 1
 fi
 
-WARN_ARGS="-Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wshadow -D_FORTIFY_SOURCE=2 " 
+WARN_ARGS="-Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wshadow -D_FORTIFY_SOURCE=2 "
 FORMAT_ARGS="-fno-sanitize-recover "
+HEADER_PATH="-I$GIT_ROOT_DIR/Templates"
 EXTRA_ARGS="-Wall -Wextra -pedantic -std=c++17 -O2 -Wformat=2 -Wfloat-equal -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address -fsanitize=undefined -fstack-protector"
 
-g++ $EXTRA_ARGS -o program "$1" -DLOCAL
+g++ $EXTRA_ARGS $HEADER_PATH -o program "$1" -DLOCAL
 ans=`./program < $INPUT_FILE`
 printf "\n"
 echo "$ans" > output.txt
