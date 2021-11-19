@@ -56,9 +56,9 @@ removeGeneratedFiles() {
 # Set a trap so that we make sure generated files are always deleted
 trap removeGeneratedFiles 0
 
-g++ $1 -o $TEST_DIR/program
-g++ $2 -o $TEST_DIR/safe
-g++ $3 -o $TEST_DIR/generator
+g++ -std=c++17 $1 -o $TEST_DIR/program
+g++ -std=c++17 $2 -o $TEST_DIR/safe
+g++ -std=c++17 $3 -o $TEST_DIR/generator
 
 cd $TEST_DIR
 for i in {1..5000}
@@ -77,9 +77,15 @@ do
     cat output_program.txt
     echo -e "\nOutput of $2:\n"
     cat output_safe.txt
+
+    diff output_program.txt output_safe.txt
+    cp output_program.txt $HOME_DIR/output_program.txt
+    cp output_safe.txt $HOME_DIR/output_safe.txt
+    cp input.txt $HOME_DIR/input.txt
+
     break
   fi
-  echo "$i ✅"
+  echo -n "✅"
 done
 
 removeGeneratedFiles
